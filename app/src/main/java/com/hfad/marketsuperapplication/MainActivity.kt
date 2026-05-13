@@ -1,6 +1,7 @@
 package com.hfad.marketsuperapplication
 
 
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.activity.ComponentActivity
@@ -23,11 +24,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 
@@ -44,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,6 +64,7 @@ import androidx.navigation.navArgument
 import coil.compose.AsyncImage
 import com.hfad.marketsuperapplication.ui.theme.MyTheme
 import com.hfad.marketsuperapplication.ui.theme.lightGreen
+import org.koin.androidx.compose.get
 //import coil.compose.rememberAsyncImagePainter
 //import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
@@ -99,6 +105,7 @@ fun MainScreen3(navcontroller : NavHostController){
 
     Scaffold(
         topBar = { AppBar() }
+        , floatingActionButton = { ListFab()}
     ) { innerPadding ->
         Surface(modifier = Modifier
             .fillMaxSize()
@@ -123,10 +130,21 @@ fun MainScreen3(navcontroller : NavHostController){
     }
 
 @Composable
-fun userProfileDetailScreen(id:Int){
+fun ListFab(){
+    FloatingActionButton(onClick = { /*TODO*/ }) {
+        androidx.compose.material3.Icon(imageVector = Icons.Filled.Add, contentDescription = "add")
+
+    }
+}
+
+@Composable
+fun userProfileDetailScreen(id:Int , navController : NavHostController){
     val userProfile = superUserProfileList.first{userProfile -> userProfile.id == id}
     Scaffold(
-        topBar = { AppBar() }
+        topBar = { AppBar(icon = Icons.Filled.ArrowBack , description = "back"){
+            navController.navigateUp()
+
+        } }
     ) { innerPadding ->
         Surface(modifier = Modifier
             .fillMaxSize()
@@ -140,6 +158,9 @@ fun userProfileDetailScreen(id:Int){
 
 @Composable
 fun UserApplication(){
+    val dataSource: DataSource = get()
+
+    val mm = dataSource.getInfo()
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "userList" ){
         composable("userList"){
@@ -149,18 +170,19 @@ fun UserApplication(){
             arguments = listOf(navArgument("userId") { type = NavType.IntType })
         ) { backStackEntry ->
             val userId = backStackEntry.arguments?.getInt("userId") ?: 0
-            userProfileDetailScreen(userId)
+            userProfileDetailScreen(userId, navController)
         }
     }
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun AppBar(){
+fun AppBar(title:String="", icon: ImageVector =Icons.Filled.Home , description: String = "Home"  , iconClickAction: ()-> Unit={}){
+
     TopAppBar(title = { Text(text = "Message application users") }
-    , navigationIcon = {IconButton(onClick = { /* handle navigation */ })
+    , navigationIcon = {IconButton(onClick = { iconClickAction() })
         {
-        Icon(Icons.Filled.Home, contentDescription = "Home")
+        Icon(icon, contentDescription = description )
     }
     }, colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary,titleContentColor = MaterialTheme.colorScheme.onPrimary,navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,actionIconContentColor = MaterialTheme.colorScheme.onPrimary)
     )

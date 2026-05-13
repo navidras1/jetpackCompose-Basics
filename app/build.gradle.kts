@@ -1,6 +1,10 @@
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    //id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -48,6 +52,7 @@ android {
         }
     }
 }
+val room_version by extra("2.5.2")
 
 dependencies {
 
@@ -77,6 +82,18 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.3")
 
     //implementation("androidx.na")
+
+
+    implementation("io.insert-koin:koin-android:3.5.0")
+    implementation("io.insert-koin:koin-androidx-compose:3.5.0")
+
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+
+
+
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

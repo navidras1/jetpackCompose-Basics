@@ -1,6 +1,7 @@
 package com.hfad.marketsuperapplication.ui.theme
 
 import android.provider.CalendarContract
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -20,5 +21,8 @@ val lightGreen200 = Color(0x9932CD32)
 val ColorScheme.lightGreen:Color
     get() = lightGreen200
 
+val ColorScheme.tttt : Color
+@Composable
+get() = if(!isSystemInDarkTheme()) Color.White else lightGreen
 
 

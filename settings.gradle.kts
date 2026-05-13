@@ -4,6 +4,7 @@ pluginManagement {
 //        mavenCentral()
 //        gradlePluginPortal()
         maven("https://maven.myket.ir")
+        //maven("https://mirror.abrha.net/repository/maven/")
     }
 }
 dependencyResolutionManagement {
@@ -12,6 +13,8 @@ dependencyResolutionManagement {
 //        google()
 //        mavenCentral()
         maven("https://maven.myket.ir")
+        //maven("https://mirror.abrha.net/repository/maven/")
+
     }
 }
 
